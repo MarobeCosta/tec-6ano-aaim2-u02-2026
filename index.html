@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ============================================================
-  ARTEFATO   M7-REV-2AAIM-U02-6ANO-OF15-6F4A-V04.58
+  ARTEFATO   M7-REV-2AAIM-U02-6ANO-OF15-6F4A-V04.59
   TIPO       ESTUDANTE
   NO         26.08.24=NAV.07-REV_AAIM_6-9ano_002_prov
   CHAT       frag. 359c8b75
@@ -1931,12 +1931,27 @@ body.m7f-disc #trilhabar .telacont:before{content:"📝 DISSERTATIVA · você mo
 .m7bitalt.bia b{color:#AD1457}
 .m7bitalt .l{font-size:17px;line-height:1.45;color:#22303A}
 
-/* ===== CLD-207 · a tela de missões ===== */
-.m7nivjan .op.mprin{border-color:#7B2D8E;background:#F6EEFA}
-.m7nivjan .op.mprin b{color:#5B1A6E;font-size:19px}
-.m7nivjan .op.apoio{border-color:#1565C0;background:#EEF6FF}
-.m7nivjan .op.fech{opacity:.62;cursor:default;border-style:dashed}
-.m7nivjan .op.fech b{color:#546E7A}
+/* ===== CLD-208 · a tela exclusiva de missões ===== */
+.m7mlista{display:flex;flex-direction:column;gap:12px;margin:14px 0}
+.m7mcard{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;
+  border:3px solid #CFD8DC;border-radius:14px;background:#fff;padding:12px 14px;cursor:pointer;
+  font-family:inherit;box-sizing:border-box}
+.m7mcard:hover{background:#F7FAFC}
+.m7mcard .e{font-size:34px;line-height:1.05;flex:0 0 auto}
+.m7mcard .tx{display:flex;flex-direction:column;gap:3px}
+.m7mcard b{font-size:18px;color:#22303A}
+.m7mcard .d{font-size:16px;line-height:1.4;color:#546E7A}
+.m7mcard.on{border-color:#7B2D8E;background:#F6EEFA;border-width:5px}
+.m7mcard.on b{color:#5B1A6E}
+.m7mcard.apoio{border-color:#90CAF9;background:#F5FAFF}
+.m7mcard.apoio.on{border-color:#1565C0;background:#EEF6FF}
+.m7mcard.fech{opacity:.62;cursor:default;border-style:dashed}
+.m7mcard.fech b{color:#546E7A}
+.m7missao h2{margin-top:0}
+.m7missao .kcapa{border-color:#7B2D8E!important;background:#F9F4FC}
+.m7missao .ktxt b,.m7missao .ktxt span{color:#5B1A6E!important}
+.m7missao .kfig{font-size:52px}
+.m7nivjan .m7mlista{margin:10px 0}
 
 /* ===== CLD-203 · o card da alternativa escolhida muda de cor (Marcos 23/09 21:28) =====
    "pode mostrar o ticado com verde também e mudar a cor do card da alternativa para verde" */
@@ -3294,12 +3309,12 @@ html,body{overflow-x:clip}
 /* ==================== MODO ==================== */
 const MODO_TESTE = false;
 const UNIDADE = "revisão para a 2ª AAIM";
-const NO_PROV = "26.09.24_US01_GC01_PAD_C207_V0458_to_ESTUDANTE_6ano-3bim-2aaim-U_02-revisao-M7-OF15-6F4A.html";
+const NO_PROV = "26.09.24_US01_GC01_PAD_C208_V0459_to_ESTUDANTE_6ano-3bim-2aaim-U_02-revisao-M7-OF15-6F4A.html";
 const LINK_PROV = "https://claude.ai/chat/359c8b75-e4f4-42b6-a186-d0a41a8a9507";
 const EMOJI_INT=' <span style="color:#B83D3D">❓</span>';
 /* 0 = usa as 15. 10 = a tela entrega 10 por estudante, como a prova. */
 const QUESTOES_POR_ESTUDANTE = 0;
-const VERSAO = "V04.58";
+const VERSAO = "V04.59";
 /* ---- selo de conferência · dificulta adulterar o placar ---- */
 function hashTexto(s){
   let h=5381;
@@ -3765,7 +3780,7 @@ function temasDoEstudante(){
 }
 function montarRoteiro(){
   TEMAS_DO_ESTUDANTE=null;
-  roteiro=[{t:"abertura"},{t:"conviv"}];
+  roteiro=[{t:"abertura"},{t:"conviv"},{t:"missao"}];
   let n=0,aulaAtual="",objAtual="",grupoObj=0;
   const meus=temasDoEstudante();
   BANCO.forEach(function(q,qi){
@@ -3810,6 +3825,7 @@ function rotuloTela(r){
   if(!r) return "—";
   if(r.t==="abertura") return "Escolha a turma, escreva o seu número de chamada e o seu nome. Depois clique em Começar, aqui embaixo.";
   if(r.t==="conviv") return "o combinado";
+  if(r.t==="missao") return "escolher a missão";
   if(r.t==="capa") return nomeAula(r.aula);
   if(r.t==="objs") return "objetivo "+(r.grupo||1)+" · "+nomeAula(r.aula);
   if(r.t==="pausa") return "pausa · "+nomeAula(r.aula);
@@ -3929,6 +3945,7 @@ function pintarRodape(){
 /* ==================== LISTA PADRAO FACA ==================== */
 function formaDe(r){
   if(r.t==="conviv") return {s:"▲",c:"#8E2B2B"};
+  if(r.t==="missao") return {s:"▲",c:"#7B2D8E"};
   if(r.t==="capa")   return {s:"■",c:corAula(r.aula)};
   if(r.t==="objs")   return {s:"◎",c:corAula(r.aula)};
   if(r.t==="pausa")  return {s:"▶",c:"#7B2D8E"};
@@ -4051,6 +4068,7 @@ function abrirLista(){
     } else if(r.t==="objs"){ pil='<span class="pill cat">🎯 objetivos da aula</span>';
     } else if(r.t==="pausa"){ pil='<span class="pill cat">🎮 jogo da pausa</span>';
     } else if(r.t==="capa"){ pil='<span class="pill cat">capa da aula</span>';
+    } else if(r.t==="missao"){ pil='<span class="pill cat">🧭 escolher a missão</span>';
     } else if(r.t==="conviv"){ pil='<span class="pill cat">o combinado</span>';
     } else if(r.t==="abertura"){ pil='<span class="pill cat">identificação</span>';
     } else if(r.t==="chk"||r.t==="final"){ pil='<span class="pill cat">placar</span>'; }
@@ -4394,6 +4412,7 @@ function render(){
   if(!r)return;
   if(r.t==="abertura") telaAbertura();
   else if(r.t==="conviv") telaConvivencia();
+  else if(r.t==="missao") telaMissao();
   else if(r.t==="capa") telaCapa(r);
   else if(r.t==="pausa") telaPausa(r);
   else if(r.t==="objs") telaObjetivos(r);
@@ -7853,10 +7872,14 @@ function responder(i){
     if(certo){
       registro[r.n]={tent:1,ts:ts,ajudou:false}; registro[r.n].selo=carimbar(r.n,1,ts);
       delete TENT_POR_PERG[r.n];
+      /* CLD-208 · na missão 🧩 todas as fases, acertar o tema NÃO pula as fases:
+         quem escolheu essa missão quer passar por elas de qualquer jeito.
+         A tela de 2ª tentativa (fase6==="fecha") continua sendo pulada — ela só existe
+         para quem errou. */
       roteiro.forEach(function(x){
-        if(x.t==="perg"&&x.qi===r.qi&&x!==r&&!registro[x.n]){
-          registro[x.n]={tent:0,pulado:true,ts:ts}; registro[x.n].selo=carimbar(x.n,0,ts);
-        }
+        if(x.t!=="perg"||x.qi!==r.qi||x===r||registro[x.n]) return;
+        if(CAMINHO==="fases" && x.rech && !x.discf) return;
+        registro[x.n]={tent:0,pulado:true,ts:ts}; registro[x.n].selo=carimbar(x.n,0,ts);
       });
       try{ ajustarNivel(true); calibrarNivel() }catch(e){}
       h='<div class="frase1">'+FRASE_1A[n%FRASE_1A.length]+'</div>'+
@@ -10003,7 +10026,17 @@ function pintarCena(r){
    A nota sai igual: quem acerta o tema de primeira já ganhava o crédito cheio. */
 let CAMINHO="direto";   /* CLD-207 · abre na missão principal */
 function trocarCaminho(c){
-  CAMINHO=(c==="direto")?"direto":"completo";
+  /* CLD-208 · três caminhos: direto (só temas) · completo (abre ao errar) · fases (tudo) */
+  CAMINHO=(c==="direto"||c==="fases")?c:"completo";
+  if(CAMINHO!=="direto"){
+    /* voltar de "direto" para os outros: as fases que foram marcadas como puladas sem o
+       estudante ter respondido nada voltam a valer. Sem isto, quem trocava de missão
+       ficava com o caminho antigo pela frente. */
+    roteiro.forEach(function(x){
+      if(x.t==="perg" && x.rech && registro[x.n] && registro[x.n].pulado && registro[x.n].tent===0)
+        delete registro[x.n];
+    });
+  }
   if(CAMINHO==="direto"){
     /* marca como pulada toda fase ainda não respondida · as telas continuam no sumário */
     const ts=Date.now();
@@ -10053,13 +10086,60 @@ function aplicarCaminhoInicial(){
 }
 /* depois do 1º tema, a tela de missões aparece UMA vez: o estudante fica sabendo que as
    outras existem, sem ter escolhido no escuro antes de ver como é a tela. */
-function oferecerMissoes(){
-  if(MISSOES_OFERECIDAS) return;
-  const feitos=roteiro.filter(function(x){ return x.fase6==="abre" && registro[x.n] }).length;
-  if(feitos<1) return;
-  MISSOES_OFERECIDAS=true;
-  try{ salvarProgresso() }catch(e){}
-  setTimeout(function(){ try{ abrirCaminho() }catch(e){} }, 400);
+function oferecerMissoes(){ /* CLD-208 · não abre mais sozinha: virou tela do roteiro */ }
+/* ==================== CLD-208 · A TELA EXCLUSIVA DE MISSÕES (Marcos 24/09 06:50)
+   "NÃO ENTENDI ONDE ENTRARAM OS CARDS DE ESCOLHA (...) ACHEI QUE ISSO TERIA TELA EXCLUSIVA."
+   Tinha razão: no CLD-207 os cards viraram uma janela sobreposta, que some ao tocar fora e
+   não aparece no sumário. Agora é uma TELA do roteiro, logo depois do combinado, com
+   número, título e lugar na lista — o estudante escolhe antes de começar e volta quando
+   quiser pelo botão 🧭 do topo. */
+function cardMissao(id, on, emo, tit, linhas, fechado){
+  let h=fechado
+    ? '<div class="m7mcard fech">'
+    : '<button type="button" class="m7mcard'+(on?" on":"")+'" onclick="trocarCaminho(\''+id+'\')">';
+  h+='<span class="e">'+emo+'</span><span class="tx"><b>'+tit+(on?' · escolhida':'')+'</b>'+
+     linhas.map(function(l){ return '<span class="d">'+l+'</span>' }).join("")+'</span>';
+  return h+(fechado?'</div>':'</button>');
+}
+function blocosMissao(){
+  const temas=BANCO.length;
+  const fases=roteiro.filter(function(x){ return x.rech && !x.discf }).length;
+  return cardMissao("direto", CAMINHO==="direto", "🎯", "MISSÃO PRINCIPAL · os "+temas+" temas",
+      ["Do jeito que caem na prova. Sem fases no meio.",
+       "Dá para terminar numa aula.",
+       "É esta que vale a prova. Comece por ela."])+
+    cardMissao("completo", CAMINHO==="completo", "🥪", "MISSÃO 2 · desmontar quando errar",
+      ["Acertou o tema? Segue para o próximo.",
+       "Errou? O tema se abre em fases até você entender.",
+       "Demora mais. Faça depois dos temas."])+
+    cardMissao("fases", CAMINHO==="fases", "🧩", "MISSÃO 3 · todas as fases",
+      ["Os "+temas+" temas e as "+fases+" fases, uma por uma.",
+       "As fases abrem mesmo quando você acerta o tema.",
+       "É a mais longa. Para quem quer entender tudo."])+
+    cardMissao("", false, "⚽", "MISSÃO 4 · justificar cada alternativa",
+      ["Dizer por que cada frase é gol, trave, fora ou gol contra.",
+       "🔒 Ainda em construção. Entra numa próxima versão."], true)+
+    '<button type="button" class="m7mcard apoio'+(apoioLigado()?" on":"")+'" onclick="entrarApoio()">'+
+      '<span class="e">🛸</span><span class="tx"><b>TEXTO CURTO'+(apoioLigado()?" · ligado":"")+'</b>'+
+      '<span class="d">Mesmas perguntas, escritas em frases curtas.</span>'+
+      '<span class="d">Vale a mesma nota. Não é missão: é só o jeito de ler.</span>'+
+      '<span class="d">'+(apoioLigado()?"Toque para voltar ao texto normal.":"Toque se o texto estiver difícil hoje.")+
+      '</span></span></button>';
+}
+function telaMissao(){
+  const el=document.getElementById("palco"); if(!el) return;
+  el.innerHTML='<div class="card m7missao">'+
+    '<h2 style="color:#5B1A6E">🧭 Escolha a sua missão</h2>'+
+    '<div class="kcapa"><div class="kfig" style="font-size:52px;text-align:center">🧭</div>'+
+    '<div class="ktxt"><b>Escolha a sua missão</b>'+
+    '<span>Todas contam a mesma nota.<br>O que muda é o caminho até a resposta.</span></div></div>'+
+    '<p><b>A missão principal é a dos temas.</b> São as questões do jeito que caem na prova. '+
+    'Faça ela primeiro: assim você vê todas antes de ir para a Alura.</p>'+
+    '<p><b>As outras são para depois.</b> Se sobrar tempo, volte aqui pelo botão 🧭 no alto da tela '+
+    'e escolha outra. Você não perde nada do que já fez.</p>'+
+    '<div class="m7mlista">'+blocosMissao()+'</div>'+
+    '<div style="font-size:16px;color:var(--cinza);margin-top:12px;text-align:center">'+
+    'Clique em Próximo, na barra de baixo, para começar.</div></div>';
 }
 function apoioLigado(){ return NIVEL<=0 && NIVEL_TRAVADO }
 function entrarApoio(){
@@ -10071,47 +10151,15 @@ function entrarApoio(){
 let APOIO_ESCOLHIDO=false;
 function abrirCaminho(){
   fecharCaminho();
-  /* conta TEMA, não tela: a dissertativa é um tema e não tem par abre/fecha,
-     então contar só por fase6==="abre" devolvia 14 onde o Marcos sempre diz 15. */
-  const temas=BANCO.length;
-  const fases=roteiro.filter(function(x){ return x.rech && !x.discf }).length;
-  const qFeitos={};
-  roteiro.forEach(function(x){ if(x.t==="perg" && x.fase6==="abre" && registro[x.n]) qFeitos[x.qi]=1 });
-  roteiro.forEach(function(x){ if(x.discf && registro[x.n]) qFeitos[x.qi]=1 });
-  const feitos=Object.keys(qFeitos).length;
   const d=document.createElement("div"); d.id="m7camjan"; d.className="m7nivjan";
-  d.innerHTML='<div class="cx"><div class="tt">🧭 As missões desta revisão</div>'+
-    '<div class="sb">A principal é a que vale a prova. Faça ela primeiro.</div>'+
-
-    '<button type="button" class="op mprin'+(CAMINHO==="direto"?" on":"")+'" onclick="trocarCaminho(\'direto\')">'+
-      '<span class="e">🎯</span><span class="tx"><b>MISSÃO PRINCIPAL · os '+temas+' temas</b>'+
-      '<span class="d">Do jeito que caem na prova. Sem fases no meio.</span>'+
-      '<span class="d">Dá para terminar numa aula.</span>'+
-      '<span class="d">Você já fez '+feitos+' de '+temas+'.</span></span></button>'+
-
-    '<button type="button" class="op'+(CAMINHO==="completo"?" on":"")+'" onclick="trocarCaminho(\'completo\')">'+
-      '<span class="e">🥪</span><span class="tx"><b>MISSÃO 2 · desmontar o tema</b>'+
-      '<span class="d">Errou o tema? Ele se abre em fases até você entender.</span>'+
-      '<span class="d">'+temas+' temas e até '+fases+' fases.</span>'+
-      '<span class="d">Demora mais. Faça depois dos temas.</span></span></button>'+
-
-    '<div class="op fech"><span class="e">⚽</span><span class="tx"><b>MISSÃO 3 · justificar cada alternativa</b>'+
-      '<span class="d">Dizer por que cada frase é gol, trave, fora ou gol contra.</span>'+
-      '<span class="d">🔒 Ainda em construção. Entra numa próxima versão.</span></span></div>'+
-
-    '<button type="button" class="op apoio'+(apoioLigado()?" on":"")+'" onclick="entrarApoio()">'+
-      '<span class="e">🛸</span><span class="tx"><b>TEXTO CURTO'+(apoioLigado()?" · ligado":"")+'</b>'+
-      '<span class="d">Mesmas perguntas, escritas em frases curtas.</span>'+
-      '<span class="d">Vale a mesma nota. Não é missão: é só o jeito de ler.</span>'+
-      '<span class="d">'+(apoioLigado()?"Toque para voltar ao texto normal.":"Toque se o texto estiver difícil hoje.")+'</span></span></button>'+
-
-    '<div class="obs">Todas contam nota igual. Você pode trocar de missão quando quiser, '+
-    'por este mesmo botão no alto da tela.</div>'+
+  d.innerHTML='<div class="cx"><div class="tt">🧭 Trocar de missão</div>'+
+    '<div class="sb">Todas contam a mesma nota. Você não perde o que já fez.</div>'+
+    '<div class="m7mlista">'+blocosMissao()+'</div>'+
     '<button type="button" class="fechar" onclick="fecharCaminho()">← Voltar</button></div>';
   document.body.appendChild(d);
 }
 function botaoCaminho(){
-  const m=(CAMINHO==="direto")?"🎯 principal":"🥪 desmontar";
+  const m={direto:"🎯 principal",completo:"🥪 desmontar",fases:"🧩 todas as fases"}[CAMINHO]||"🥪 desmontar";
   return '<button type="button" class="m7nivbt" onclick="abrirCaminho()">🧭 Missão · '+m+
          (apoioLigado()?" · 🛸":"")+'</button>';
 }
