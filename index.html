@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- ============================================================
-  ARTEFATO   M7-REV-2AAIM-U02-6ANO-OF15-6F4A-V04.60
+  ARTEFATO   M7-REV-2AAIM-U02-6ANO-OF15-6F4A-V04.62
   TIPO       ESTUDANTE
   NO         26.08.24=NAV.07-REV_AAIM_6-9ano_002_prov
   CHAT       frag. 359c8b75
@@ -1985,6 +1985,66 @@ html,body{overflow-x:clip}
 </style>
 </head>
 <body>
+<div id="precisaBaixar" style="position:fixed;inset:0;z-index:2147483646;background:#fff;
+  padding:24px;font:18px/1.55 system-ui,Arial,sans-serif;color:#22303A;overflow:auto">
+  <div style="max-width:640px;margin:0 auto">
+    <div style="font-size:52px">📥</div>
+    <h2 style="color:#B3001B;margin:8px 0 12px;font-size:26px">Baixe o arquivo antes de começar</h2>
+    <p style="font-size:20px"><b>Esta tela quer dizer que a revisão está sendo só espiada, não aberta.</b></p>
+    <p>O Google Drive mostra o arquivo, mas não deixa ele funcionar. Por isso nada aparece direito.</p>
+    <div style="border:3px solid #7B2D8E;border-radius:14px;padding:16px 18px;margin:18px 0;background:#F9F4FC">
+      <p style="margin:0 0 10px"><b>Faça assim, são 3 passos:</b></p>
+      <p style="margin:0 0 8px"><b>1 ·</b> Clique em <b>Baixar</b>, na seta para baixo no alto da tela.</p>
+      <p style="margin:0 0 8px"><b>2 ·</b> Abra a pasta <b>Downloads</b> do computador.</p>
+      <p style="margin:0"><b>3 ·</b> Clique duas vezes no arquivo que você baixou.</p>
+    </div>
+    <p>Depois de baixado, ele abre sozinho e <b>funciona até sem internet</b>.</p>
+    <p style="color:#546E7A;font-size:16px">Se você já baixou e mesmo assim caiu nesta tela, chame o professor.</p>
+  </div>
+</div>
+<script>
+/* CLD-213 · o aviso acima nasce VISÍVEL e só some quando o JavaScript roda de verdade.
+   Se o arquivo estiver sendo espiado na prévia do Drive, que não executa script, o aviso
+   fica na tela e ensina o caminho. É à prova de falha: não depende de nada funcionar. */
+try{ var _pb=document.getElementById("precisaBaixar"); if(_pb) _pb.style.display="none"; }catch(e){}
+</script>
+<div id="socorroM7" style="display:none;position:fixed;inset:0;z-index:2147483647;
+  background:#fff;padding:22px;font:17px/1.5 system-ui,Arial,sans-serif;color:#22303A;overflow:auto">
+  <div style="max-width:620px;margin:0 auto">
+    <div style="font-size:44px">🛟</div>
+    <h2 style="color:#B3001B;margin:6px 0 10px">A revisão não conseguiu abrir neste computador</h2>
+    <p style="font-size:20px"><b>Primeiro, confira o mais comum:</b> você BAIXOU o arquivo,
+      ou está olhando ele pelo Google Drive?</p>
+    <p>Se está pelo Drive, clique em <b>Baixar</b> e abra o arquivo da pasta Downloads.</p>
+    <p style="margin-top:14px">Se você já baixou, <b>não é culpa sua</b>. Chame o professor e mostre esta tela.</p>
+    <p>Enquanto isso, você pode seguir para a Alura.</p>
+    <p style="margin-top:18px"><b>Recado para o professor:</b></p>
+    <pre id="socorroTxt" style="white-space:pre-wrap;word-break:break-word;background:#F1F3F4;
+      border:3px solid #CFD8DC;border-radius:10px;padding:12px;font-size:14px"></pre>
+  </div>
+</div>
+<script>
+(function(){
+  function mostrar(msg){
+    try{
+      var d=document.getElementById("socorroM7"); if(!d) return;
+      var t=document.getElementById("socorroTxt");
+      if(t) t.textContent=msg+"\n\nnavegador: "+navigator.userAgent;
+      d.style.display="block";
+    }catch(e){}
+  }
+  window.addEventListener("error",function(ev){
+    var m=(ev&&ev.message)||"erro sem mensagem";
+    if(/SyntaxError|Unexpected|Invalid regular expression|is not defined/i.test(m)) mostrar(m);
+  },true);
+  window.addEventListener("load",function(){
+    setTimeout(function(){
+      var p=document.getElementById("palco");
+      if(!p || !p.innerHTML || p.innerHTML.length<40) mostrar("A tela ficou vazia: o programa da revisão não chegou a desenhar nada.");
+    },2500);
+  });
+})();
+</script>
 
 
 
@@ -3309,12 +3369,12 @@ html,body{overflow-x:clip}
 /* ==================== MODO ==================== */
 const MODO_TESTE = false;
 const UNIDADE = "revisão para a 2ª AAIM";
-const NO_PROV = "26.09.24_US01_GC01_PAD_C209_V0460_to_ESTUDANTE_6ano-3bim-2aaim-U_02-revisao-M7-OF15-6F4A.html";
+const NO_PROV = "26.09.24_US01_GC01_PAD_C213_V0462_to_ESTUDANTE_6ano-3bim-2aaim-U_02-revisao-M7-OF15-6F4A.html";
 const LINK_PROV = "https://claude.ai/chat/359c8b75-e4f4-42b6-a186-d0a41a8a9507";
 const EMOJI_INT=' <span style="color:#B83D3D">❓</span>';
 /* 0 = usa as 15. 10 = a tela entrega 10 por estudante, como a prova. */
 const QUESTOES_POR_ESTUDANTE = 0;
-const VERSAO = "V04.60";
+const VERSAO = "V04.62";
 /* ---- selo de conferência · dificulta adulterar o placar ---- */
 function hashTexto(s){
   let h=5381;
@@ -4994,7 +5054,7 @@ function telaCapa(r){
    (function(){
      /* qual objetivo esta tela abre · e quais sao os outros da aula */
      const cod=(r&&r.obj)?r.obj:"";
-     const todos=String(a.objetivo||"").split(/(?<=\.)\s+/).filter(function(x){return x.trim()});
+     const todos=String(a.objetivo||"").replace(/([.])\s+/g,"$1\u0001").split("\u0001").filter(function(x){return x.trim()});
      if(!cod || !todos.length) return "";
      const n=parseInt(String(cod).split(".")[1],10);
      if(!n || !todos[n-1]) return "";
@@ -6333,8 +6393,8 @@ function marcarVeredito(txt){
     .replace(/^(Verdadeir[ao])[,.:]?\s*/i,'<b class="jVerd">$1,</b> ')
     .replace(/^(Fals[ao])[,.:]?\s*/i,'<b class="jFalso">$1,</b> ')
     .split(/(<[^>]*>)/).map(function(pt){ if(pt.charAt(0)==="<") return pt;
-      return pt.replace(/(?<![\wÀ-ÿ])(não|nunca|nenhum|nenhuma|jamais|nem|sem)(?![\wÀ-ÿ])/gi,'<b class="jnao">$1</b>')
-               .replace(/(?<![\wÀ-ÿ])(sim|concorda|concordo|verdadeira|verdadeiro)(?![\wÀ-ÿ])/gi,'<b class="jsim">$1</b>') }).join("");
+      return pt.replace(/(^|[^\wÀ-ÿ])(não|nunca|nenhum|nenhuma|jamais|nem|sem)(?![\wÀ-ÿ])/gi,'$1<b class="jnao">$2</b>')
+               .replace(/(^|[^\wÀ-ÿ])(sim|concorda|concordo|verdadeira|verdadeiro)(?![\wÀ-ÿ])/gi,'$1<b class="jsim">$2</b>') }).join("");
 }
 function marcarTermos(txt,q){
   if(!txt||!q.glossario) return txt;
@@ -6346,12 +6406,12 @@ function marcarTermos(txt,q){
     if(partes[k].charAt(0)==="<") continue;
     ordem.forEach(function(o){
       const esc=o.t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-      const re=new RegExp("(?<![\\wÀ-ú])("+esc+"(?:\\(\\))?)(?![\\wÀ-ú])","i");
+      const re=new RegExp("(^|[^\\wÀ-ú])("+esc+"(?:\\(\\))?)(?![\\wÀ-ú])","i");
       if(!re.test(partes[k])) return;
       partes[k]=partes[k].replace(re,
-        '<span class="tchip t-'+tipoDoTermo(o.t,BANCO[qi]).k+'" role="button" tabindex="0" '+
+        '$1<span class="tchip t-'+tipoDoTermo(o.t,BANCO[qi]).k+'" role="button" tabindex="0" '+
         'title="'+tipoDoTermo(o.t,BANCO[qi]).rot+'" '+
-        'onclick="event.stopPropagation();abrirG('+qi+','+o.i+')">$1</span>');
+        'onclick="event.stopPropagation();abrirG('+qi+','+o.i+')">$2</span>');
     });
   }
   return partes.join("");
@@ -6427,7 +6487,7 @@ function blocoCodigo(q){
        : ('<div class="pycode">'+pintarPython(q.codigo)+'</div>');
 }
 function contextoEmPartes(txt,q,pref,detalhado){
-  const frases=String(txt||"").split(/(?<=[.!?])\s+/).filter(function(x){return x.trim()});
+  const frases=String(txt||"").replace(/([.!?])\s+/g,"$1\u0001").split("\u0001").filter(function(x){return x.trim()});
   const blocos=[]; let atual=[];
   frases.forEach(function(f){
     atual.push(f);
@@ -6473,8 +6533,8 @@ function contextoEmDuas(ctx){
     (q.glossario||[]).slice().sort(function(a,b){return b.t.length-a.t.length})
       .forEach(function(g){
         const esc=g.t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-        s=s.replace(new RegExp("(?<![\\wÀ-ú])("+esc+")(?![\\wÀ-ú])","i"),
-          '<b class="dicapal">$1</b>');
+        s=s.replace(new RegExp("(^|[^\\wÀ-ú])("+esc+")(?![\\wÀ-ú])","i"),
+          '$1<b class="dicapal">$2</b>');
       });
     // palavras entre aspas ou destacadas pela própria dica
     s=s.replace(/«([^»]+)»/g,'<b class="dicapal">$1</b>');
@@ -6549,7 +6609,7 @@ function contextoEmDuas(ctx){
          gr[tp.k].l.push('<div class="gg-i'+(naTela?'':' gg-fora')+'" data-onde="'+(naTela?'':ondeAparece(BANCO.indexOf(q),g.t))+'"><button type="button" class="tchip t-'+tp.k+'"'+est+
            ' title="'+tp.rot+(cb?' · bloco do StartLab':'')+'" onclick="abrirG('+BANCO.indexOf(q)+','+i+')">'+
            g.t+'</button>'+
-           '<span class="gg-d"> · '+g.d.split(/(?<=\.)\s+/)[0]+'</span></div>');
+           '<span class="gg-d"> · '+g.d.replace(/([.])\s+/g,"$1\u0001").split("\u0001")[0]+'</span></div>');
        });
        /* um card por categoria, na ordem de importancia */
        return ["cmd","conc","enun"].map(function(k){
@@ -7144,7 +7204,7 @@ function voltaAoContexto(g,q){
          "Mesma ideia, dois lugares. Procure <b>"+termo+"</b> "+onde+".";
 }
 function partesDoTermo(g,q,completo){
-  const p=String(g.d).split(/(?<=\.)\s+/);
+  const p=String(g.d).replace(/([.])\s+/g,"$1\u0001").split("\u0001");
   const a=p.shift()||g.d, b=p.join(" ")||"";
   const ex=(typeof EXTRA!=="undefined"&&EXTRA[g.t])?EXTRA[g.t]:null;
   const r=[{rot:"o que é · definição",txt:a}];
@@ -8715,9 +8775,9 @@ function partirChipComposto(el){
     const alvo=ws.filter(function(w){ return PY_DENTRO.indexOf(w.toLowerCase())>=0 });
     if(alvo.length!==1) return;
     const esc=alvo[0].replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-    const re=new RegExp("(?<![\\wÀ-ÿ])("+esc+")(?![\\wÀ-ÿ])");
+    const re=new RegExp("(^|[^\\wÀ-ÿ])("+esc+")(?![\\wÀ-ÿ])");
     const frag=document.createElement("span");
-    frag.innerHTML=t.replace(re,'<i class="m7kwin">$1</i>');
+    frag.innerHTML=t.replace(re,'$1<i class="m7kwin">$2</i>');
     el.replaceChild(frag, no);
     el.title=(el.title?el.title+" · ":"")+alvo[0]+" é a palavra do Python; laço/comando é o nome da estrutura";
   }catch(e){}
@@ -8757,13 +8817,13 @@ function chipar(txt, qForcada){
         const esc=String(o.t).replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
         /* o "()" que vem colado no nome do comando entra DENTRO da pastilha:
            print() é uma coisa só na tela do estudante, não "print" mais "()" solto */
-        const re=new RegExp("(?<![\\wÀ-ÿ])("+esc+"(?:\\(\\))?)(?![\\wÀ-ÿ])","i");
+        const re=new RegExp("(^|[^\\wÀ-ÿ])("+esc+"(?:\\(\\))?)(?![\\wÀ-ÿ])","i");
         if(!re.test(partes[k])) return;
         let cls="", rot="";
         try{ const tp=tipoDoTermo(o.t,q); cls=" t-"+tp.k; rot=tp.rot||"" }catch(e){}
         partes[k]=partes[k].replace(re,
-          '<span class="tchip'+cls+'" role="button" tabindex="0" title="'+rot+'" '+
-          'onclick="event.stopPropagation();abrirG('+qi+','+o.i+')">$1</span>');
+          '$1<span class="tchip'+cls+'" role="button" tabindex="0" title="'+rot+'" '+
+          'onclick="event.stopPropagation();abrirG('+qi+','+o.i+')">$2</span>');
       });
     }
     return partes.join("");
@@ -9048,11 +9108,11 @@ function pintarFundo(r){
    azul números · rosa operação e fórmula · verde o objeto principal do tema. Só no enunciado,
    na fala do colega e na pergunta — nunca nas alternativas, que teriam a resposta entregue. */
 const GRIFO_REGRAS=[
-  {c:"gf-lar", r:/(?<![\wÀ-ÿ])(mm|cm|km|kg|mg|ml|litros?|minutos?|segundos?|horas?|dias?|semanas?|meses|mês|R\$|%|°C)(?![\wÀ-ÿ])/gi},
-  {c:"gf-ros", r:/(?<![\wÀ-ÿ])(soma|somar|somou|média|médias|total|totais|maior|menor|diferença|dividir|multiplicar|porcentagem|contar|contou|ordenar|comparar|trocar|repetir|repete|repetiu|guardar|guarda|organizar|organizou)(?![\wÀ-ÿ])/gi},
-  {c:"gf-azu", r:/(?<![\wÀ-ÿ\d])\d+([.,]\d+)?(?![\wÀ-ÿ\d])/g},
-  {c:"gf-cnt", r:/(?<![\wÀ-ÿ])(Onde|O que|O quê|Como|Quando|Por que|Por quê|Quem|Quantos|Quantas|Quanto|Qual|Quais)(?![\wÀ-ÿ])/g},
-  {c:"gf-cnt", r:/(?<![\wÀ-ÿ])(Marque|Escolha|Leia|Calcule|Responda|Complete|Compare)(?![\wÀ-ÿ])/g}
+  {c:"gf-lar", r:/(^|[^\wÀ-ÿ])(mm|cm|km|kg|mg|ml|litros?|minutos?|segundos?|horas?|dias?|semanas?|meses|mês|R\$|%|°C)(?![\wÀ-ÿ])/gi},
+  {c:"gf-ros", r:/(^|[^\wÀ-ÿ])(soma|somar|somou|média|médias|total|totais|maior|menor|diferença|dividir|multiplicar|porcentagem|contar|contou|ordenar|comparar|trocar|repetir|repete|repetiu|guardar|guarda|organizar|organizou)(?![\wÀ-ÿ])/gi},
+  {c:"gf-azu", r:/(^|[^\wÀ-ÿ\d])(\d+(?:[.,]\d+)?)(?![\wÀ-ÿ\d])/g},
+  {c:"gf-cnt", r:/(^|[^\wÀ-ÿ])(Onde|O que|O quê|Como|Quando|Por que|Por quê|Quem|Quantos|Quantas|Quanto|Qual|Quais)(?![\wÀ-ÿ])/g},
+  {c:"gf-cnt", r:/(^|[^\wÀ-ÿ])(Marque|Escolha|Leia|Calcule|Responda|Complete|Compare)(?![\wÀ-ÿ])/g}
 ];
 function grifar(html){
   if(!html) return html;
@@ -9066,7 +9126,9 @@ function grifar(html){
     }
     if(dentroChip) continue;
     GRIFO_REGRAS.forEach(function(g){
-      partes[k]=partes[k].replace(g.r, function(m){ return '<span class="gf '+g.c+'">'+m+'</span>' });
+      /* CLD-211 · o grupo 1 agora é o caractere antes da palavra (substituiu o lookbehind);
+         ele é devolvido intacto e só o grupo 2 recebe o grifo. */
+      partes[k]=partes[k].replace(g.r, function(m,a,b){ return a+'<span class="gf '+g.c+'">'+b+'</span>' });
     });
   }
   return partes.join("");
@@ -9077,8 +9139,8 @@ function grifar(html){
 function marcarVeredito(t){
   return String(t||"").split(/(<[^>]*>)/).map(function(pt){
     if(pt.charAt(0)==="<") return pt;
-    return pt.replace(/(?<![\wÀ-ÿ])(não|nunca|nenhum|nenhuma|jamais|nem|sem)(?![\wÀ-ÿ])/gi,'<b class="jnao">$1</b>')
-             .replace(/(?<![\wÀ-ÿ])(sim|concorda|concordo|verdadeira|verdadeiro)(?![\wÀ-ÿ])/gi,'<b class="jsim">$1</b>');
+    return pt.replace(/(^|[^\wÀ-ÿ])(não|nunca|nenhum|nenhuma|jamais|nem|sem)(?![\wÀ-ÿ])/gi,'$1<b class="jnao">$2</b>')
+             .replace(/(^|[^\wÀ-ÿ])(sim|concorda|concordo|verdadeira|verdadeiro)(?![\wÀ-ÿ])/gi,'$1<b class="jsim">$2</b>');
   }).join("");
 }
 
@@ -9144,8 +9206,8 @@ function grifarPistas(html, p, ctx){
     }
     if(dentroChip) continue;
     alvos.forEach(function(w){
-      const rx=new RegExp("(?<![\\wÀ-ÿ])("+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"s?)(?![\\wÀ-ÿ])","gi");
-      partes[k]=partes[k].replace(rx, function(m){ return '<span class="gf gf-ver">'+m+'</span>' });
+      const rx=new RegExp("(^|[^\\wÀ-ÿ])("+w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"s?)(?![\\wÀ-ÿ])","gi");
+      partes[k]=partes[k].replace(rx, function(m,a,b){ return a+'<span class="gf gf-ver">'+b+'</span>' });
     });
   }
   return partes.join("");
@@ -9178,7 +9240,9 @@ function grifarAlt(html){
     if(dentroChip) continue;
     GRIFO_REGRAS.forEach(function(g){
       if(GRIFO_ALT.indexOf(g.c)<0) return;
-      partes[k]=partes[k].replace(g.r, function(m){ return '<span class="gf '+g.c+'">'+m+'</span>' });
+      /* CLD-211 · o grupo 1 agora é o caractere antes da palavra (substituiu o lookbehind);
+         ele é devolvido intacto e só o grupo 2 recebe o grifo. */
+      partes[k]=partes[k].replace(g.r, function(m,a,b){ return a+'<span class="gf '+g.c+'">'+b+'</span>' });
     });
   }
   return partes.join("");
